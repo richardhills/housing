@@ -19,11 +19,11 @@
     }
     #main {
       float:right;
-      width:850px;
+      width:820px;
     }
     #sidebar {
       float:left;
-      width:150px;
+      width:180px;
     }
     #map {
       width:100%;
@@ -74,7 +74,7 @@
       
       newLandReleasedForBuilding = function(evt) {
         var averageHouseSize = $("#houseSize").val();
-        housesBuiltCount += Math.round(evt.feature.geometry.getArea() / averageHouseSize / 3.0);
+        housesBuiltCount += Math.round(evt.feature.geometry.getArea() / averageHouseSize / 6.0);
         updateHouseCountUI();
       };
       
@@ -129,6 +129,7 @@
       <p>Size of new homes: <input type="number" id="houseSize" value=200 /> m2</p>
       
       <p>New houses built: <span id="houseCount">0</span></p>
+      <p><a href="mailto:richard.hills@gmail.com">richard.hills@gmail.com</a>
     </div>
     <div id="main">
       <div id="map">
