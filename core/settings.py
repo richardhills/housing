@@ -1,5 +1,5 @@
 """
-Django settings for housing project.
+Django settings for core project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'housing.home',
+    'core.home',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,9 +49,9 @@ MIDDLEWARE_CLASSES = (
 #    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'housing.urls'
+ROOT_URLCONF = 'core.urls'
 
-WSGI_APPLICATION = 'housing.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database
