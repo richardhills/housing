@@ -302,7 +302,7 @@ module.exports = React.createClass({ displayName: "exports",
         color: "rgba(246, 150, 121, 0.8)"
       }),
       stroke: new ol.style.Stroke({
-        color: "#F7977A",
+        color: "#000000",
         width: 2
       }),
       image: new ol.style.Circle({
@@ -317,7 +317,7 @@ module.exports = React.createClass({ displayName: "exports",
         color: "rgba(255, 247, 153, 0.8)"
       }),
       stroke: new ol.style.Stroke({
-        color: "#FFF79A",
+        color: "#000000",
         width: 2
       }),
       image: new ol.style.Circle({
@@ -332,7 +332,7 @@ module.exports = React.createClass({ displayName: "exports",
         color: "rgba(130, 202, 156, 0.8)"
       }),
       stroke: new ol.style.Stroke({
-        color: "#A2D39C",
+        color: "#000000",
         width: 2
       }),
       image: new ol.style.Circle({
@@ -347,7 +347,7 @@ module.exports = React.createClass({ displayName: "exports",
         color: "rgba(131, 147, 202, 0.8)"
       }),
       stroke: new ol.style.Stroke({
-        color: "#8493CA",
+        color: "#000000",
         width: 2
       }),
       image: new ol.style.Circle({
