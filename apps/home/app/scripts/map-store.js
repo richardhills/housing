@@ -30,6 +30,10 @@ module.exports = class MapStore {
     return this.data.get('homes_built');
   }
   
+  getShareOnFacebookLink() {
+    return "http://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(document.URL);
+  }
+  
   getParameterByName(name) {
     var match = RegExp('[?&#]' + name + '=([^&]*)').exec(window.location.hash);
     return match && decodeURIComponent(match[1].replace(/\+/g, ' '));

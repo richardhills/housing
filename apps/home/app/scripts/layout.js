@@ -22,7 +22,7 @@ module.exports = React.createClass({
         <div className="home-layout__controlbar">
           <ControlBar 
             map_actions={this.props.map_actions}
-            map_store={this.props.map_store} />
+            map_store={this.props.map_store}/>
         </div>
         <div className="home-layout__map">
           <Map

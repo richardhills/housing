@@ -50,6 +50,7 @@ module.exports = React.createClass({
           <li>Detached: {this.props.map_store.getHomesBuilt().get('detached')}</li>
           <li>Total: {this.getTotalHomesBuilt()}</li  >
         </ul>
+        <p><a href={this.props.map_store.getShareOnFacebookLink()}>Share your plan on facebook</a></p>
         <p><a href="mailto:richard.hills@gmail.com">richard.hills@gmail.com</a></p>
       </div>
     );
