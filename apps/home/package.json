@@ -27,14 +27,14 @@
   },
   "dependencies": {
     "cookie-getter": "0.0.2",
-    "domready": "^1.0.7",
-    "immutable": "^3.6.2",
-    "lodash": "^2.4.1",
-    "jquery": "^1.11.2",
-    "openlayers": "^3.2.1",
+    "domready": "1.0.7",
+    "immutable": "3.6.2",
+    "lodash": "2.4.1",
+    "jquery": "1.11.2",
+    "openlayers": "3.2.1",
     "proj4": "",
-    "qs": "^2.3.3",
-    "react": "^0.12.2",
-    "reflux": "^0.2.2"
+    "qs": "2.3.3",
+    "react": "0.12.2",
+    "reflux": "0.2.4"
   }
 }
