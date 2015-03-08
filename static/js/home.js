@@ -299,7 +299,7 @@ module.exports = React.createClass({ displayName: "exports",
   buildingStyles: {
     flats: new ol.style.Style({
       fill: new ol.style.Fill({
-        color: "rgba(246, 150, 121, 0.5)"
+        color: "rgba(246, 150, 121, 0.8)"
       }),
       stroke: new ol.style.Stroke({
         color: "#F7977A",
@@ -314,7 +314,7 @@ module.exports = React.createClass({ displayName: "exports",
     }),
     terraced: new ol.style.Style({
       fill: new ol.style.Fill({
-        color: "rgba(255, 247, 153, 0.5)"
+        color: "rgba(255, 247, 153, 0.8)"
       }),
       stroke: new ol.style.Stroke({
         color: "#FFF79A",
@@ -329,7 +329,7 @@ module.exports = React.createClass({ displayName: "exports",
     }),
     "semi-detached": new ol.style.Style({
       fill: new ol.style.Fill({
-        color: "rgba(130, 202, 156, 0.5)"
+        color: "rgba(130, 202, 156, 0.8)"
       }),
       stroke: new ol.style.Stroke({
         color: "#A2D39C",
@@ -344,7 +344,7 @@ module.exports = React.createClass({ displayName: "exports",
     }),
     detached: new ol.style.Style({
       fill: new ol.style.Fill({
-        color: "rgba(131, 147, 202, 0.5)"
+        color: "rgba(131, 147, 202, 0.8)"
       }),
       stroke: new ol.style.Stroke({
         color: "#8493CA",

@@ -1,26 +1,24 @@
 .home-layout {
   float: none; }
   .home-layout__controlbar {
+    position: fixed;
     float: left;
-    width: 300px;
-    margin-right: -300px; }
+    width: 300px; }
   .home-layout__map {
-    float: left;
-    width: 100%;
-    margin-left: 300px;
-    margin-right: -300px; }
+    position: relative;
+    width: auto;
+    margin-left: 300px; }
 
 .home-layout {
   float: none; }
   .home-layout__controlbar {
+    position: fixed;
     float: left;
-    width: 300px;
-    margin-right: -300px; }
+    width: 300px; }
   .home-layout__map {
-    float: left;
-    width: 100%;
-    margin-left: 300px;
-    margin-right: -300px; }
+    position: relative;
+    width: auto;
+    margin-left: 300px; }
 
 .home-map {
   width: 100%;

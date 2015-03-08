@@ -89,10 +89,10 @@ module.exports = React.createClass({
   buildingStyles: {
     'flats': new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(246, 150, 121, 0.5)'
+        color: 'rgba(246, 150, 121, 0.8)'
       }),
       stroke: new ol.style.Stroke({
-        color: '#F7977A',
+        color: '#000000',
         width: 2
       }),
       image: new ol.style.Circle({
@@ -104,10 +104,10 @@ module.exports = React.createClass({
     }),
     'terraced': new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(255, 247, 153, 0.5)'
+        color: 'rgba(255, 247, 153, 0.8)'
       }),
       stroke: new ol.style.Stroke({
-        color: '#FFF79A',
+        color: '#000000',
         width: 2
       }),
       image: new ol.style.Circle({
@@ -119,10 +119,10 @@ module.exports = React.createClass({
     }),
     'semi-detached': new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(130, 202, 156, 0.5)'
+        color: 'rgba(130, 202, 156, 0.8)'
       }),
       stroke: new ol.style.Stroke({
-        color: '#A2D39C',
+        color: '#000000',
         width: 2
       }),
       image: new ol.style.Circle({
@@ -134,10 +134,10 @@ module.exports = React.createClass({
     }),
     'detached': new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(131, 147, 202, 0.5)'
+        color: 'rgba(131, 147, 202, 0.8)'
       }),
       stroke: new ol.style.Stroke({
-        color: '#8493CA',
+        color: '#000000',
         width: 2
       }),
       image: new ol.style.Circle({
