@@ -3,14 +3,14 @@
   float: none;
 
   &__controlbar {
+    position: fixed;
     float:left;
     width:300px;
-    margin-right:-300px;
   }
 
   &__map {
-    float:left;
-    width:100%;
+    position: relative;
+    width:auto;
     margin-left:300px;
   }
 }

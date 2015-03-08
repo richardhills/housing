@@ -7,7 +7,8 @@
   .home-layout__map {
     float: left;
     width: 100%;
-    margin-left: 300px; }
+    margin-left: 300px;
+    margin-right: -300px; }
 
 .home-layout {
   float: none; }
@@ -18,7 +19,8 @@
   .home-layout__map {
     float: left;
     width: 100%;
-    margin-left: 300px; }
+    margin-left: 300px;
+    margin-right: -300px; }
 
 .home-map {
   width: 100%;
