@@ -201,8 +201,8 @@ module.exports = (function () {
 
   MapStore.prototype.onBuildFeaturesChanged = function (building_features) {
     this.data = this.data.set("homes_built", this.calculateHomesBuilt(building_features));
-    this.trigger(this.data);
     this.storeHomesBuiltInQueryString(building_features);
+    this.trigger(this.data);
   };
 
   return MapStore;
