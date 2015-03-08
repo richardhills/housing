@@ -1,14 +1,16 @@
 .#{$ns}-layout {
 
-  width:1000px;
+  float: none;
 
   &__controlbar {
     float:left;
-    width:240px;
+    width:300px;
+    margin-right:-300px;
   }
 
   &__map {
-    float:right;
-    width:760px;
+    float:left;
+    width:100%;
+    margin-left:300px;
   }
 }
