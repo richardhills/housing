@@ -74,9 +74,21 @@ gulp.task('styles', function() {
     .pipe(gulp.dest(script_output));
 });
 
+gulp.task('assets', function() {
+  var asset_input = [
+    './app/assets/*'
+  ];
+  
+  var asset_output = './public/assets/';
+
+  return gulp.src(asset_input)
+    .pipe(gulp.dest(asset_output));
+});
+
 gulp.task('build', [
   'scripts',
-  'styles'
+  'styles',
+  'assets'
 ]);
 
 gulp.task('default', [

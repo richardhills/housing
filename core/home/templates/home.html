@@ -1,10 +1,15 @@
 {% load staticfiles %}
 
 <html>
-<head>
+<head prefix="og: http://ogp.me/ns#">
   <title>Where would you build?</title>
   <script src="{% static "js/home.js" %}"></script>
   <link rel='stylesheet' href='{% static "css/home.css" %}' type='text/css' media='all' />
+
+  <meta property="og:title" content="Where would you build?">
+  <meta property="og:description" content="Oxford City needs 28,000 new homes by 2026. Where would you build them?">
+  <meta property="og:image" content="static/facebook_image.png">
+  <meta property="og:image:type" content="image/png">
 
   {% if USE_INSPECTLET %}
   <!-- Begin Inspectlet Embed Code -->
