@@ -3,33 +3,9 @@
 <html>
 <head>
   <title>Where would you build?</title>
-  <script src="{% static "proj4js/proj4js.js" %}"></script>
-  <script src="http://openlayers.org/api/OpenLayers.js"></script>
-  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-  <style>
-    body,
-    html {
-      margin:0;
-      padding:0;
-      color:#000;
-    }
-    #wrap {
-      width:1000px;
-      margin:0 auto;
-    }
-    #main {
-      float:right;
-      width:820px;
-    }
-    #sidebar {
-      float:left;
-      width:180px;
-    }
-    #map {
-      width:100%;
-      height:100%;
-    }
-  </style>
+  <script src="{% static "js/home.js" %}"></script>
+  <link rel='stylesheet' href='{% static "css/home.css" %}' type='text/css' media='all' />
+
   {% if USE_INSPECTLET %}
   <!-- Begin Inspectlet Embed Code -->
   <script type="text/javascript" id="inspectletjs">
@@ -47,94 +23,9 @@
   <!-- End Inspectlet Embed Code -->
   {% endif %}
 
-  <script type="text/javascript">
-    init = function() {
-      Proj4js.defs["EPSG:27700"] = "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs";
-      var epsg4326 = new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
-      var mercantor = new OpenLayers.Projection("EPSG:900913"); 
-      var ordinance = new OpenLayers.Projection('EPSG:27700');
-      
-      var map = new OpenLayers.Map('map');
-      var wms = new OpenLayers.Layer.OSM("Mapnik");
-      
-      map.addLayer(wms);
-
-      var buildingLayer = new OpenLayers.Layer.Vector("Building Layer");
-      
-      var housesBuiltCount = 0;
-      
-      var updateHouseCountUI = function() {
-        $("#houseCount").text(housesBuiltCount);
-      };
-      
-      map.addLayer(buildingLayer);
-      
-      map.addControl(new OpenLayers.Control.LayerSwitcher());
-      map.addControl(new OpenLayers.Control.MousePosition());
-      
-      newLandReleasedForBuilding = function(evt) {
-        var averageHouseSize = $("#houseSize").val();
-        housesBuiltCount += Math.round(evt.feature.geometry.getArea() / averageHouseSize / 6.0);
-        updateHouseCountUI();
-      };
-      
-      //var floodplains = "{% static "oxford_flood_data.gml" %}"
-      //
-      //map.addLayer(new OpenLayers.Layer.Vector("Flood Risk Areas", {
-      //  protocol: new OpenLayers.Protocol.HTTP({
-      //    url: floodplains,
-      //    format: new OpenLayers.Format.GML()
-      //  }),
-      //  strategies: [new OpenLayers.Strategy.Fixed()],
-      //  projection: ordinance
-      //}));
-      
-      drawController = new OpenLayers.Control.DrawFeature(buildingLayer,
-                                                          OpenLayers.Handler.Polygon,
-                                                          {eventListeners:{"featureadded": newLandReleasedForBuilding}});
-      map.addControl(drawController);
-      
-      projectTo = map.getProjectionObject();
-     
-      var lonLat = new OpenLayers.LonLat( -1.2578, 51.7519 ).transform(epsg4326, projectTo);
-            
-      var zoom=13;
-      map.setCenter(lonLat, zoom);
-      
-      $('#navigateToggle').click(function(event) {
-        drawController.deactivate();
-      });
-      $('#housingToggle').click(function(event) {
-        drawController.activate();
-      });
-    };
-  </script> 
-  
 </head>
-<body onload="init()">
-  <div id="wrap">
-    <div id="sidebar">
-      <ul>
-        <li>
-          <input type="radio" name="type" value="navigate" id="navigateToggle"
-            checked="checked" />
-          <label for="navigateToggle">Navigate</label>
-        </li>
-        <li>
-          <input type="radio" name="type" value="housing" id="housingToggle" />
-          <label for="housingToggle">Build</label>
-        </li>
-      </ul>
-      
-      <p>Size of new homes: <input type="number" id="houseSize" value=200 /> m2</p>
-      
-      <p>New houses built: <span id="houseCount">0</span></p>
-      <p><a href="mailto:richard.hills@gmail.com">richard.hills@gmail.com</a>
-    </div>
-    <div id="main">
-      <div id="map">
-      </div>
-    </div>
+<body>
+  <div id="home">
   </div>
 </body>
 </html>
