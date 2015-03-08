@@ -21,7 +21,7 @@ var Reflux = require("reflux");
 var immutable = require("immutable");
 
 module.exports = function () {
-  var MapActions = Reflux.createActions(["build_type_changed", "build_features_changed"]);
+  var MapActions = Reflux.createActions(["build_type_changed", "build_features_changed", "clear_all"]);
 
   return immutable.Map({
     map_actions: MapActions });
@@ -37,6 +37,10 @@ var Reflux = require("reflux");
 module.exports = React.createClass({ displayName: "exports",
   buildTypeChanged: function (event) {
     this.props.map_actions.build_type_changed(event.target.value);
+  },
+
+  startAgain: function (event) {
+    this.props.map_actions.clear_all();
   },
 
   createCheckBox: function (value, label) {
@@ -59,7 +63,7 @@ module.exports = React.createClass({ displayName: "exports",
   },
 
   render: function () {
-    return (React.createElement("div", { className: "home-controlbar" }, React.createElement("h2", null, "Double click on the map to start building"), React.createElement("p", null, "What would you build?"), React.createElement("ul", null, this.createCheckBox("flats", "Flats"), this.createCheckBox("terraced", "Terraced Homes"), this.createCheckBox("semi-detached", "Semi-detached Homes"), this.createCheckBox("detached", "Detached Homes")), React.createElement("p", null, "Total new build:"), React.createElement("ul", null, React.createElement("li", null, "Flats: ", this.props.map_store.getHomesBuilt().get("flats")), React.createElement("li", null, "Terraced: ", this.props.map_store.getHomesBuilt().get("terraced")), React.createElement("li", null, "Semi-Detached: ", this.props.map_store.getHomesBuilt().get("semi-detached")), React.createElement("li", null, "Detached: ", this.props.map_store.getHomesBuilt().get("detached")), React.createElement("li", null, "Total: ", this.getTotalHomesBuilt())), React.createElement("p", null, React.createElement("a", { href: this.props.map_store.getShareOnFacebookLink(), target: "_blank" }, "Share your plan on facebook")), React.createElement("p", null, React.createElement("a", { href: "mailto:richard.hills@gmail.com" }, "richard.hills@gmail.com"))));
+    return (React.createElement("div", { className: "home-controlbar" }, React.createElement("h2", null, "Double click on the map to start building"), React.createElement("p", null, "What would you build?"), React.createElement("ul", null, this.createCheckBox("flats", "Flats"), this.createCheckBox("terraced", "Terraced Homes"), this.createCheckBox("semi-detached", "Semi-detached Homes"), this.createCheckBox("detached", "Detached Homes")), React.createElement("p", null, "Total new build:"), React.createElement("ul", null, React.createElement("li", null, "Flats: ", this.props.map_store.getHomesBuilt().get("flats")), React.createElement("li", null, "Terraced: ", this.props.map_store.getHomesBuilt().get("terraced")), React.createElement("li", null, "Semi-Detached: ", this.props.map_store.getHomesBuilt().get("semi-detached")), React.createElement("li", null, "Detached: ", this.props.map_store.getHomesBuilt().get("detached")), React.createElement("li", null, "Total: ", this.getTotalHomesBuilt())), React.createElement("button", { onClick: this.startAgain }, "Start again"), React.createElement("p", null, React.createElement("a", { href: this.props.map_store.getShareOnFacebookLink(), target: "_blank" }, "Share your plan on facebook")), React.createElement("p", null, React.createElement("a", { href: "mailto:richard.hills@gmail.com" }, "richard.hills@gmail.com"))));
   }
 });
 
@@ -111,6 +115,7 @@ module.exports = (function () {
   MapStore.prototype.init = function (data) {
     this.listenTo(this.map_actions.build_type_changed, this.onBuildTypeChanged);
     this.listenTo(this.map_actions.build_features_changed, this.onBuildFeaturesChanged);
+    this.listenTo(this.map_actions.clear_all, this.onClearAll);
   };
 
   MapStore.prototype.getInitialBuildings = function () {
@@ -137,14 +142,12 @@ module.exports = (function () {
   MapStore.prototype.calculateInitialBuildingsFromQueryString = function () {
     var geoJSON = new ol.format.GeoJSON();
     var initialBuildings = {};
-    for (var _iterator = ["flats", "terraced", "semi-detached", "detached"][Symbol.iterator](), _step; !(_step = _iterator.next()).done;) {
-      var buildType = _step.value;
+    ["flats", "terraced", "semi-detached", "detached"].forEach(function (buildType) {
       var data = this.getParameterByName(buildType);
       if (data) {
         initialBuildings[buildType] = geoJSON.readFeatures(data);
       }
-    }
-
+    }, this);
     return immutable.Map(initialBuildings);
   };
 
@@ -185,6 +188,10 @@ module.exports = (function () {
       }, this);
     }
     return immutable.Map(total);
+  };
+
+  MapStore.prototype.onClearAll = function () {
+    window.location = "/";
   };
 
   MapStore.prototype.onBuildTypeChanged = function (control_mode) {

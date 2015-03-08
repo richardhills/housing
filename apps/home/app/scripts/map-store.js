@@ -16,6 +16,8 @@ module.exports = class MapStore {
                   this.onBuildTypeChanged);
     this.listenTo(this.map_actions.build_features_changed,
                   this.onBuildFeaturesChanged);
+    this.listenTo(this.map_actions.clear_all,
+                  this.onClearAll);
   }
   
   getInitialBuildings() {
@@ -42,12 +44,12 @@ module.exports = class MapStore {
   calculateInitialBuildingsFromQueryString() {
     var geoJSON = new ol.format.GeoJSON();
     var initialBuildings = {};
-    for(var buildType of ['flats', 'terraced', 'semi-detached', 'detached']) {
+    ['flats', 'terraced', 'semi-detached', 'detached'].forEach(function(buildType) {
       var data = this.getParameterByName(buildType);
       if(data) {
         initialBuildings[buildType] = geoJSON.readFeatures(data);
       }
-    }
+    }, this);
     return immutable.Map(initialBuildings);
   }
 
@@ -88,6 +90,10 @@ module.exports = class MapStore {
       }, this);
     }
     return immutable.Map(total);
+  }
+  
+  onClearAll() {
+    window.location = "/";
   }
   
   onBuildTypeChanged(control_mode) {

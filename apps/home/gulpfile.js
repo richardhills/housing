@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var gulp = require('gulp');
 var reactify = require('reactify');
+var babelify = require('babelify');
 var to5 = require('6to5-browserify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -46,9 +47,12 @@ gulp.task('scripts', function() {
   var main = browserify({
     entries: scripts_input
   });
+  
+//  main.add(require.resolve('6to5/polyfill'));
 
   main.transform(reactify);
   main.transform(to5);
+  //main.transform(babelify);
 
   return main.bundle()
     .on('error', error('scripts'))
@@ -76,7 +80,7 @@ gulp.task('styles', function() {
 
 gulp.task('assets', function() {
   var asset_input = [
-    './app/assets/*'
+    './app/assets/**/*'
   ];
   
   var asset_output = './public/assets/';

@@ -6,6 +6,10 @@ module.exports = React.createClass({
   buildTypeChanged: function(event) {
     this.props.map_actions.build_type_changed(event.target.value);
   },
+  
+  startAgain: function(event) {
+    this.props.map_actions.clear_all();
+  },
 
   createCheckBox: function(value, label) {
     return (
@@ -50,6 +54,7 @@ module.exports = React.createClass({
           <li>Detached: {this.props.map_store.getHomesBuilt().get('detached')}</li>
           <li>Total: {this.getTotalHomesBuilt()}</li  >
         </ul>
+        <button onClick={this.startAgain}>Start again</button>
         <p><a href={this.props.map_store.getShareOnFacebookLink()} target='_blank'>Share your plan on facebook</a></p>
         <p><a href="mailto:richard.hills@gmail.com">richard.hills@gmail.com</a></p>
       </div>
