@@ -59,7 +59,7 @@ module.exports = React.createClass({ displayName: "exports",
   },
 
   render: function () {
-    return (React.createElement("div", { className: "home-controlbar" }, React.createElement("h2", null, "Double click on the map to start building"), React.createElement("p", null, "What would you build?"), React.createElement("ul", null, this.createCheckBox("flats", "Flats"), this.createCheckBox("terraced", "Terraced Homes"), this.createCheckBox("semi-detached", "Semi-detached Homes"), this.createCheckBox("detached", "Detached Homes")), React.createElement("p", null, "Total new build:"), React.createElement("ul", null, React.createElement("li", null, "Flats: ", this.props.map_store.getHomesBuilt().get("flats")), React.createElement("li", null, "Terraced: ", this.props.map_store.getHomesBuilt().get("terraced")), React.createElement("li", null, "Semi-Detached: ", this.props.map_store.getHomesBuilt().get("semi-detached")), React.createElement("li", null, "Detached: ", this.props.map_store.getHomesBuilt().get("detached")), React.createElement("li", null, "Total: ", this.getTotalHomesBuilt())), React.createElement("p", null, React.createElement("a", { href: "mailto:richard.hills@gmail.com" }, "richard.hills@gmail.com"))));
+    return (React.createElement("div", { className: "home-controlbar" }, React.createElement("h2", null, "Double click on the map to start building"), React.createElement("p", null, "What would you build?"), React.createElement("ul", null, this.createCheckBox("flats", "Flats"), this.createCheckBox("terraced", "Terraced Homes"), this.createCheckBox("semi-detached", "Semi-detached Homes"), this.createCheckBox("detached", "Detached Homes")), React.createElement("p", null, "Total new build:"), React.createElement("ul", null, React.createElement("li", null, "Flats: ", this.props.map_store.getHomesBuilt().get("flats")), React.createElement("li", null, "Terraced: ", this.props.map_store.getHomesBuilt().get("terraced")), React.createElement("li", null, "Semi-Detached: ", this.props.map_store.getHomesBuilt().get("semi-detached")), React.createElement("li", null, "Detached: ", this.props.map_store.getHomesBuilt().get("detached")), React.createElement("li", null, "Total: ", this.getTotalHomesBuilt())), React.createElement("p", null, React.createElement("a", { href: this.props.map_store.getShareOnFacebookLink() }, "Share your plan on facebook")), React.createElement("p", null, React.createElement("a", { href: "mailto:richard.hills@gmail.com" }, "richard.hills@gmail.com"))));
   }
 });
 
@@ -123,6 +123,10 @@ module.exports = (function () {
 
   MapStore.prototype.getHomesBuilt = function () {
     return this.data.get("homes_built");
+  };
+
+  MapStore.prototype.getShareOnFacebookLink = function () {
+    return "http://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(document.URL);
   };
 
   MapStore.prototype.getParameterByName = function (name) {
