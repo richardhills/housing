@@ -35,7 +35,6 @@
     "proj4": "",
     "qs": "^2.3.3",
     "react": "^0.12.2",
-    "react-mini-router": "",
-    "reflux": "^0.2.4"
+    "reflux": "^0.2.2"
   }
 }
