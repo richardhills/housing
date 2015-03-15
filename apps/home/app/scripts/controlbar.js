@@ -21,7 +21,7 @@ module.exports = React.createClass({
             value={value}
             id={value}
             onChange={this.buildTypeChanged} />
-        <label htmlFor={value}>{label}</label>
+        <label htmlFor={value}>{label} (+{this.props.map_store.getHomesBuilt().get(value)} extra built)</label>
       </div>
     );
   },
@@ -49,14 +49,7 @@ module.exports = React.createClass({
         {this.createCheckBox('terraced', 'Terraced Homes')}
         {this.createCheckBox('semi-detached', 'Semi-detached Homes')}
         {this.createCheckBox('detached', 'Detached Homes')}
-        <p>Total new build:</p>
-        <ul>
-          <li>Flats: {this.props.map_store.getHomesBuilt().get('flats')}</li>
-          <li>Terraced: {this.props.map_store.getHomesBuilt().get('terraced')}</li>
-          <li>Semi-Detached: {this.props.map_store.getHomesBuilt().get('semi-detached')}</li>
-          <li>Detached: {this.props.map_store.getHomesBuilt().get('detached')}</li>
-          <li>Total: {this.getTotalHomesBuilt()}</li  >
-        </ul>
+        <p>Total new build: {this.getTotalHomesBuilt()}</p>
         <button onClick={this.startAgain}>Start again</button>
         <p><a href={this.props.map_store.getShareOnFacebookLink()} target='_blank'>Share your plan on facebook</a></p>
         <p><a href="mailto:richard.hills@gmail.com">richard.hills@gmail.com</a></p>
