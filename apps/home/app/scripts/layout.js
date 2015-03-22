@@ -4,6 +4,7 @@ var Reflux = require('reflux');
 
 var ControlBar = require('./controlbar');
 var Map = require('./map');
+var Key = require('./key');
 
 module.exports = React.createClass({
   mixins: [Reflux.ListenerMixin],
@@ -24,10 +25,17 @@ module.exports = React.createClass({
             map_actions={this.props.map_actions}
             map_store={this.props.map_store}/>
         </div>
-        <div className="home-layout__map">
-          <Map
-            map_store={this.props.map_store}
-            map_actions={this.props.map_actions} />
+        <div className="home-layout__contents">
+          <div className="home-layout__map-container">
+            <div className="home-layout__map">
+              <Map
+                map_store={this.props.map_store}
+                map_actions={this.props.map_actions} />
+            </div>
+          </div>
+          <div className="home-layout__key">
+            <Key />
+          </div>
         </div>
       </div>
     );

@@ -1,16 +1,29 @@
 .#{$ns}-layout {
 
-  float: none;
-
   &__controlbar {
-    position: fixed;
     float:left;
     width:300px;
   }
+  
+  &__contents {
+    margin-left:300px;
+  }
+  
+  &__map-container {
+    width:100%;
+    float:left;
+  }
 
   &__map {
-    position: relative;
-    width:auto;
-    margin-left:300px;
+    margin-right:220px;
+  }
+
+  &__key {
+    float:left;
+    width:220px;
+    height:100%;
+    margin-left:-220px;
+    overflow: scroll;
+    overflow-x: hidden;
   }
 }
