@@ -53,6 +53,7 @@ module.exports = React.createClass({
   
   onBuildingAdded: function(event) {
     event.element.on('change', this.onBuildingChanged);
+    this.popupOverFeature(event.element);
     this.props.map_actions.build_features_changed(this.buildingOverlays);
   },
   
@@ -84,6 +85,59 @@ module.exports = React.createClass({
     
     return {'draw': draw,
             'modify': modify}
+  },
+
+  initializeSelectionInteraction: function() {
+    var _this = this;
+    this.selectInteraction = new ol.interaction.Select({
+      condition: ol.events.condition.click
+    });
+    
+    this.selectInteraction.getFeatures().on('add', function(event) {
+      var feature = event.element;
+      _this.popupOverFeature(feature);
+    });
+  },
+  
+  popupOverFeature(feature) {
+    var _this = this;
+    var extent = feature.getGeometry().getExtent();
+    var center = [(extent[0] + extent[2]) / 2,
+                  (extent[1] + extent[3]) / 2];
+    var content = document.getElementById('popup-content');
+
+    var buildTypeOfNewFeature;
+    for(var buildingType in _this.buildingOverlays) {
+      if(_this.buildingOverlays[buildingType].getFeatures().getArray().indexOf(feature) != -1) {
+        buildTypeOfNewFeature = buildingType;
+      }
+    }
+    var newHomes =  _this.props.map_store.calculateHomesBuiltInFeature(feature, buildTypeOfNewFeature);
+    _this.popupContent.innerHTML = '' + newHomes + ' ' + buildTypeOfNewFeature;
+    _this.popupOverlay.setPosition(center);
+  },
+
+  initializePopupOverlay: function() {
+    var _this = this;
+    var container = document.getElementById('popup');
+    this.popupContent = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+
+    closer.onclick = function() {
+      _this.popupOverlay.setPosition(undefined);
+      closer.blur();
+      return false;
+    };
+
+    this.popupOverlay = new ol.Overlay({
+      element: container,
+      autoPan: true,
+      autoPanAnimation: {
+        duration: 250
+      }
+    });
+    
+    this.popupOverlay.setMap(this.map);
   },
 
   buildingStyles: {
@@ -149,6 +203,26 @@ module.exports = React.createClass({
     }),
   },
 
+  onMouseMove: function(event) {
+    var _this = this;
+    
+    if (event.dragging) {
+      return;
+    }
+    var pixel = this.map.getEventPixel(event.originalEvent);
+    
+    var feature = this.map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+      for(var overlayName in _this.buildingOverlays) {
+        var overlay = _this.buildingOverlays[overlayName];
+        if(overlay.getFeatures().getArray().indexOf(feature) != -1) {
+          return feature;
+        }
+      }
+    });
+    
+    this.setInteractions(typeof(feature) == "undefined");
+  },
+
   componentDidMount: function() {
     this.initializeMap('map');
     this.buildingInteractions = {};
@@ -161,27 +235,52 @@ module.exports = React.createClass({
       this.buildingInteractions[buildingType] = buildingInteraction;
     }
     this.props.map_actions.build_features_changed(this.buildingOverlays);
-    this.setInteractions();
+    this.initializeSelectionInteraction();
+    this.initializePopupOverlay();
+    this.setInteractions(true);
+    
+    this.map.on('pointermove', this.onMouseMove);
   },
   
   componentWillUpdate: function() {
-    this.setInteractions();
+    this.setInteractions(true);
   },
   
-  setInteractions: function() {
+  setInteractions: function(buildingMode) {
     for(var buildingType in this.buildingInteractions) {
-      this.map.removeInteraction(this.buildingInteractions[buildingType]['draw']);
-      this.map.addInteraction(this.buildingInteractions[buildingType]['modify']);
-
-      if(this.props.map_store.getBuildType() == buildingType) {
-        this.map.addInteraction(this.buildingInteractions[buildingType]['draw']);
+      var modifyInteraction = this.buildingInteractions[buildingType]['modify'];
+      if(buildingMode) {
+        if(this.map.getInteractions().getArray().indexOf(modifyInteraction) == -1) {
+          this.map.addInteraction(modifyInteraction);
+        }
+      } else {
+        this.map.removeInteraction(modifyInteraction);
       }
+
+      var drawInteraction = this.buildingInteractions[buildingType]['draw'];
+      if(buildingMode & this.props.map_store.getBuildType() == buildingType) {
+        if(this.map.getInteractions().getArray().indexOf(drawInteraction) == -1) {
+          this.map.addInteraction(drawInteraction);
+        }
+      } else {
+        this.map.removeInteraction(drawInteraction);
+      }
+    }
+    
+    if(buildingMode) {
+      this.map.removeInteraction(this.selectInteraction);
+    } else {
+      this.map.addInteraction(this.selectInteraction);
     }
   },
 
   render: function() {
     return (
       <div className="home-map" id="map">
+        <div id="popup" className="home-map__ol-popup">
+          <a href="#" id="popup-closer" className="home-map__ol-popup-closer"></a>
+          <div id="popup-content"></div>
+        </div>
       </div>
     );
   }

@@ -69,27 +69,31 @@ module.exports = class MapStore {
   }
   
   calculateHomesBuilt(buildFeatures) {
+    var _this = this;
     var total = {'flats': 0,
                  'terraced': 0,
                  'semi-detached': 0,
                  'detached': 0};
-    var units_per_m2 = 5;
     
+    for(var buildType in buildFeatures) {
+      buildFeatures[buildType].getFeatures().forEach(function(feature) {
+        total[buildType] += _this.calculateHomesBuiltInFeature(feature, buildType);
+      }, this);
+    }
+    return immutable.Map(total);
+  }
+  
+  calculateHomesBuiltInFeature(feature, buildType) {
     var housingSize = {
       'flats': 50 / 4,
       'terraced': 50,
       'semi-detached': 100,
       'detached': 200
-    }
-    
-    for(var buildType in buildFeatures) {
-      buildFeatures[buildType].getFeatures().forEach(function(feature) {
-        var area = feature.getGeometry().getArea();
-        var aream2 = area / units_per_m2;
-        total[buildType] += Math.round(aream2 / housingSize[buildType]);
-      }, this);
-    }
-    return immutable.Map(total);
+    };
+    var units_per_m2 = 5;
+    var area = feature.getGeometry().getArea();
+    var aream2 = area / units_per_m2;
+    return Math.round(aream2 / housingSize[buildType]);
   }
   
   onClearAll() {
