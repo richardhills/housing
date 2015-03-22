@@ -53,7 +53,7 @@ module.exports = React.createClass({
   
   onBuildingAdded: function(event) {
     event.element.on('change', this.onBuildingChanged);
-    this.popupOverFeature(event.element);
+    this.popupOverFeature(event.element, "You have just built ");
     this.props.map_actions.build_features_changed(this.buildingOverlays);
   },
   
@@ -95,11 +95,11 @@ module.exports = React.createClass({
     
     this.selectInteraction.getFeatures().on('add', function(event) {
       var feature = event.element;
-      _this.popupOverFeature(feature);
+      _this.popupOverFeature(feature, "You have built ");
     });
   },
   
-  popupOverFeature(feature) {
+  popupOverFeature(feature, message) {
     var _this = this;
     var extent = feature.getGeometry().getExtent();
     var center = [(extent[0] + extent[2]) / 2,
@@ -113,7 +113,7 @@ module.exports = React.createClass({
       }
     }
     var newHomes =  _this.props.map_store.calculateHomesBuiltInFeature(feature, buildTypeOfNewFeature);
-    _this.popupContent.innerHTML = '' + newHomes + ' ' + buildTypeOfNewFeature;
+    _this.popupContent.innerHTML = message + newHomes + ' ' + buildTypeOfNewFeature;
     _this.popupOverlay.setPosition(center);
   },
 

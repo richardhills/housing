@@ -47,7 +47,8 @@
     border-radius: 10px;
     border: 1px solid #cccccc;
     bottom: 12px;
-    left: -50px; }
+    left: -50px;
+    width: 100px; }
   .home-map__ol-popup:after, .home-map__ol-popup:before {
     top: 100%;
     border: solid transparent;
