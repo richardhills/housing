@@ -1,1 +1,89 @@
-/Users/richard/Documents/workspace/housing/core/home/static/css/home.css
+@charset "UTF-8";
+.home-layout__controlbar {
+  float: left;
+  width: 300px; }
+.home-layout__contents {
+  margin-left: 300px; }
+.home-layout__map-container {
+  width: 100%;
+  float: left; }
+.home-layout__map {
+  margin-right: 220px; }
+.home-layout__key {
+  float: left;
+  width: 220px;
+  height: 100%;
+  margin-left: -220px;
+  overflow: scroll;
+  overflow-x: hidden; }
+
+.home-layout__controlbar {
+  float: left;
+  width: 300px; }
+.home-layout__contents {
+  margin-left: 300px; }
+.home-layout__map-container {
+  width: 100%;
+  float: left; }
+.home-layout__map {
+  margin-right: 220px; }
+.home-layout__key {
+  float: left;
+  width: 220px;
+  height: 100%;
+  margin-left: -220px;
+  overflow: scroll;
+  overflow-x: hidden; }
+
+.home-map {
+  width: 100%;
+  height: 100%; }
+  .home-map__ol-popup {
+    position: absolute;
+    background-color: white;
+    -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px; }
+  .home-map__ol-popup:after, .home-map__ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none; }
+  .home-map__ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px; }
+  .home-map__ol-popup:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px; }
+  .home-map__ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px; }
+  .home-map__ol-popup-closer:after {
+    content: "✖"; }
+
+.home-controlbar {
+  margin: 10px; }
+
+html {
+  background-color: #ffffff;
+  color: #000000;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 300; }
+
+body {
+  margin: 0;
+  min-height: 600px; }
