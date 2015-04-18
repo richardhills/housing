@@ -4,6 +4,8 @@ var Reflux = require('reflux');
 var _ = require('lodash');
 var dialog = require('vex-js/js/vex.dialog.js');
 
+var Messages = require('./messages');
+
 var latlng = 'EPSG:4326'; //WGS 1984 projection
 var mercantor = 'EPSG:3857'; 
 var ordinance = 'EPSG:27700';
@@ -77,7 +79,7 @@ module.exports = React.createClass({
 
     draw.on('drawstart', function() {
       if(_this.showHelpPopup) {
-        dialog.alert('You have started building some homes.<br>Single click to draw the edge of where you want to build, and double click to finish.');
+        dialog.alert(Messages.onStartFirstBuilding);
         _this.showHelpPopup = false;
       }
     });

@@ -2,6 +2,8 @@ var React = require('react');
 var immutable = require('immutable');
 var Reflux = require('reflux');
 
+var Messages = require('./messages');
+
 module.exports = React.createClass({
   buildTypeChanged: function(event) {
     this.props.map_actions.build_type_changed(event.target.value);
@@ -40,8 +42,7 @@ module.exports = React.createClass({
       <div className="home-controlbar">
         <h2>The Oxford Housing Crisis</h2>
         <p>
-          Oxford requires 28,000 homes by 2026, and Oxfordshire requires more than 100,000. There is much political disagreement over these numbers (mostly the <a href="http://www.cpreoxon.org.uk/events/current-events/item/2426-public-meeting-on-over-development-of-oxfordshire">CPRE</a> and some <a href="http://www.lgcplus.com/opinion/lgc-columnists/in-depth-special-features/why-housing-is-our-priority-in-cash-strapped-times/5075577.article">City Councillors</a>
-          ), but one thing is certain; Oxford is desperately short of housing.
+        {Messages.sidePanel}
         </p>
         <p>Where would you build?</p>
         <p>Double click on the map to start building</p>
