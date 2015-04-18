@@ -61,17 +61,16 @@ module.exports = React.createClass({ displayName: "exports",
       onChange: this.buildTypeChanged }), React.createElement("label", { htmlFor: value }, label, " (+", this.props.map_store.getHomesBuilt().get(value), " extra built)")));
   },
 
-  getTotalHomesBuilt: function () {
-    var built = this.props.map_store.getHomesBuilt();
-    var total = 0;
-    built.forEach(function (count) {
-      total += count;
-    });
-    return total;
-  },
-
   render: function () {
-    return (React.createElement("div", { className: "home-controlbar" }, React.createElement("h2", null, "The Oxford Housing Crisis"), React.createElement("p", null, Messages.sidePanel), React.createElement("p", null, "Where would you build?"), React.createElement("p", null, "Double click on the map to start building"), this.createCheckBox("flats", "Flats"), this.createCheckBox("terraced", "Terraced Homes"), this.createCheckBox("semi-detached", "Semi-detached Homes"), this.createCheckBox("detached", "Detached Homes"), React.createElement("p", null, "Total new build: ", this.getTotalHomesBuilt()), React.createElement("button", { onClick: this.startAgain }, "Start again"), React.createElement("p", null, React.createElement("a", { href: this.props.map_store.getShareOnFacebookLink(), target: "_blank" }, "Share your plan on facebook")), React.createElement("p", null, React.createElement("a", { href: "mailto:richard.hills@gmail.com" }, "richard.hills@gmail.com"))));
+    var target = 28000;
+    var stillRequiredMessage;
+    if (this.props.map_store.getTotalHomesBuilt() > 28000) {
+      stillRequiredMessage = (React.createElement("p", null, React.createElement("b", null, "Congratulations! You've built enough homes to last until 2026")));
+    } else {
+      stillRequiredMessage = (React.createElement("p", null, React.createElement("b", null, "Still required: ", 28000 - this.props.map_store.getTotalHomesBuilt())));
+    }
+
+    return (React.createElement("div", { className: "home-controlbar" }, React.createElement("h2", null, "The Oxford Housing Crisis"), React.createElement("p", null, Messages.sidePanel), React.createElement("p", null, "Where would you build?"), React.createElement("p", null, "Double click on the map to start building"), this.createCheckBox("flats", "Flats"), this.createCheckBox("terraced", "Terraced Homes"), this.createCheckBox("semi-detached", "Semi-detached Homes"), this.createCheckBox("detached", "Detached Homes"), React.createElement("p", null, "Total new build: ", this.props.map_store.getTotalHomesBuilt()), stillRequiredMessage, React.createElement("button", { onClick: this.startAgain }, "Start again"), React.createElement("p", null, React.createElement("a", { href: this.props.map_store.getShareOnFacebookLink(), target: "_blank" }, "Share your plan on facebook")), React.createElement("p", null, React.createElement("a", { href: "mailto:richard.hills@gmail.com" }, "richard.hills@gmail.com"))));
   }
 });
 
@@ -92,7 +91,9 @@ module.exports = React.createClass({ displayName: "exports",
 var React = require("react");
 var immutable = require("immutable");
 var Reflux = require("reflux");
+var dialog = require("vex-js/js/vex.dialog.js");
 
+var Messages = require("./messages");
 var ControlBar = require("./controlbar");
 var Map = require("./map");
 var Key = require("./key");
@@ -103,10 +104,21 @@ module.exports = React.createClass({ displayName: "exports",
 
   componentDidMount: function () {
     this.listenTo(this.props.map_store, this.onMapStoreChanged);
+    this.showHelpPopup = true;
+    this.showTargetCompletedPopup = true;
+    this.showFirstBuildPopup = true;
   },
 
   onMapStoreChanged: function (data) {
     this.setState();
+
+    if (this.showTargetCompletedPopup & this.props.map_store.getTotalHomesBuilt() >= 28000) {
+      dialog.alert(Messages.onTargetCompleted(this.props.map_store.getTotalHomesBuilt()));
+      this.showTargetCompletedPopup = false;
+    } else if (this.showFirstBuildPopup & this.props.map_store.getTotalHomesBuilt() > 0) {
+      dialog.alert(Messages.onStartEndBuilding(this.props.map_store.getTotalHomesBuilt()));
+      this.showFirstBuildPopup = false;
+    }
   },
 
   render: function () {
@@ -118,7 +130,7 @@ module.exports = React.createClass({ displayName: "exports",
   }
 });
 
-},{"./controlbar":3,"./key":4,"./map":7,"immutable":11,"react":160,"reflux":161}],6:[function(require,module,exports){
+},{"./controlbar":3,"./key":4,"./map":7,"./messages":8,"immutable":11,"react":160,"reflux":161,"vex-js/js/vex.dialog.js":180}],6:[function(require,module,exports){
 "use strict";
 
 var immutable = require("immutable");
@@ -149,6 +161,15 @@ module.exports = (function () {
 
   MapStore.prototype.getHomesBuilt = function () {
     return this.data.get("homes_built");
+  };
+
+  MapStore.prototype.getTotalHomesBuilt = function () {
+    var built = this.getHomesBuilt();
+    var total = 0;
+    built.forEach(function (count) {
+      total += count;
+    });
+    return total;
   };
 
   MapStore.prototype.getShareOnFacebookLink = function () {
@@ -516,6 +537,7 @@ module.exports = React.createClass({ displayName: "exports",
   componentDidMount: function () {
     this.showHelpPopup = true;
     this.inDrawMode = false;
+
     this.initializeMap("map");
     this.buildingInteractions = {};
     this.buildingOverlays = {};
@@ -578,7 +600,13 @@ var React = require("react");
 
 module.exports = {
   onStartup: "<b>Oxford needs 28,000 homes by 2026.<br><br>Where would you build?</b><br><br>To start building, click on the map",
-  onStartFirstBuilding: "<b>Congrats!</b> You have started building some homes.<br>Single click to draw the edge of where you want to build, and double click to finish.",
+  onStartFirstBuilding: "<b>Congratulations!</b> You have started building some homes.<br>Single click to draw the edge of where you want to build, and double click to finish.",
+  onStartEndBuilding: function (count) {
+    return "<p><b>Congrats!</b> You have built " + count + " new homes. Can you build " + (28000 - count) + " more?</p>";
+  },
+  onTargetCompleted: function (count) {
+    return "<p><b>Congratulations!</b><br/><br/>Oxford needed 28000 and you have built " + count + ", enough to last until 2026.</p>";
+  },
   sidePanel: (React.createElement("p", null, "Oxford needs 28,000 homes by 2026, and Oxfordshire requires more than 100,000. There is much political disagreement over these numbers (mostly the ", React.createElement("a", { href: "http://www.cpreoxon.org.uk/events/current-events/item/2426-public-meeting-on-over-development-of-oxfordshire" }, "CPRE"), " and some ", React.createElement("a", { href: "http://www.lgcplus.com/opinion/lgc-columnists/in-depth-special-features/why-housing-is-our-priority-in-cash-strapped-times/5075577.article" }, "City Councillors"), "), but one thing is certain; Oxford is desperately short of housing."))
 };
 

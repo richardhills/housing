@@ -28,16 +28,15 @@ module.exports = React.createClass({
     );
   },
 
-  getTotalHomesBuilt() {
-    var built = this.props.map_store.getHomesBuilt();
-    var total = 0;
-    built.forEach(function(count) {
-      total += count;
-    });
-    return total;
-  },
-
   render: function() {
+    var target = 28000;
+    var stillRequiredMessage;
+    if(this.props.map_store.getTotalHomesBuilt() > 28000) {
+      stillRequiredMessage = (<p><b>Congratulations! You've built enough homes to last until 2026</b></p>);
+    } else {
+      stillRequiredMessage = (<p><b>Still required: {28000 - this.props.map_store.getTotalHomesBuilt()}</b></p>);
+    }
+  
     return (
       <div className="home-controlbar">
         <h2>The Oxford Housing Crisis</h2>
@@ -50,7 +49,8 @@ module.exports = React.createClass({
         {this.createCheckBox('terraced', 'Terraced Homes')}
         {this.createCheckBox('semi-detached', 'Semi-detached Homes')}
         {this.createCheckBox('detached', 'Detached Homes')}
-        <p>Total new build: {this.getTotalHomesBuilt()}</p>
+        <p>Total new build: {this.props.map_store.getTotalHomesBuilt()}</p>
+        {stillRequiredMessage}
         <button onClick={this.startAgain}>Start again</button>
         <p><a href={this.props.map_store.getShareOnFacebookLink()} target='_blank'>Share your plan on facebook</a></p>
         <p><a href="mailto:richard.hills@gmail.com">richard.hills@gmail.com</a></p>

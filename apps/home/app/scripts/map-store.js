@@ -31,7 +31,16 @@ module.exports = class MapStore {
   getHomesBuilt() {
     return this.data.get('homes_built');
   }
-  
+
+  getTotalHomesBuilt() {
+    var built = this.getHomesBuilt();
+    var total = 0;
+    built.forEach(function(count) {
+      total += count;
+    });
+    return total;
+  }
+
   getShareOnFacebookLink() {
     return "http://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(document.URL);
   }

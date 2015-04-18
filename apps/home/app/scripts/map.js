@@ -149,7 +149,7 @@ module.exports = React.createClass({
       return;
     }
 
-    var newHomes =  this.props.map_store.calculateHomesBuiltInFeature(this.selectedFeature, buildTypeOfNewFeature);
+    var newHomes = this.props.map_store.calculateHomesBuiltInFeature(this.selectedFeature, buildTypeOfNewFeature);
 
     if(typeof(newHomes) == 'undefined') {
       this.popupOverlay.setPosition(undefined);
@@ -278,6 +278,7 @@ module.exports = React.createClass({
   componentDidMount: function() {
     this.showHelpPopup = true;
     this.inDrawMode = false;
+
     this.initializeMap('map');
     this.buildingInteractions = {};
     this.buildingOverlays = {};
