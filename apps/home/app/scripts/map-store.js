@@ -91,9 +91,14 @@ module.exports = class MapStore {
       'detached': 200
     };
     var units_per_m2 = 5;
-    var area = feature.getGeometry().getArea();
-    var aream2 = area / units_per_m2;
-    return Math.round(aream2 / housingSize[buildType]);
+    
+    if(typeof(feature.getGeometry().getArea) == "function") {
+      var area = feature.getGeometry().getArea();
+      var aream2 = area / units_per_m2;
+      return Math.round(aream2 / housingSize[buildType]);
+    } else {
+      return 0;
+    }
   }
   
   onClearAll() {

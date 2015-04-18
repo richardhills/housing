@@ -56,7 +56,7 @@ module.exports = React.createClass({
   
   onBuildingAdded: function(event) {
     event.element.on('change', this.onBuildingChanged);
-    this.popupOverFeature(event.element, "You have just built ");
+    this.popupOverFeature(event.element);
     this.props.map_actions.build_features_changed(this.buildingOverlays);
   },
   
@@ -82,6 +82,12 @@ module.exports = React.createClass({
         dialog.alert(Messages.onStartFirstBuilding);
         _this.showHelpPopup = false;
       }
+      
+      _this.inDrawMode = true;
+    });
+    
+    draw.on('drawend', function() {
+      _this.inDrawMode = false;
     });
 
     var modify = new ol.interaction.Modify({
@@ -107,7 +113,7 @@ module.exports = React.createClass({
     
     this.selectInteraction.getFeatures().on('add', function(event) {
       var feature = event.element;
-      _this.popupOverFeature(feature, "You have built ");
+      _this.popupOverFeature(feature);
     });
   },
   
@@ -123,7 +129,12 @@ module.exports = React.createClass({
   },
   
   moveFeaturePopup() {
+    if(typeof(this.popupOverlay) == 'undefined') {
+      return;
+    }
+
     if(typeof(this.selectedFeature) == 'undefined') {
+      this.popupOverlay.setPosition(undefined);
       return;
     }
     var extent = this.selectedFeature.getGeometry().getExtent();
@@ -131,17 +142,28 @@ module.exports = React.createClass({
                   (extent[1] + extent[3]) / 2];
     var content = document.getElementById('popup-content');
 
-    this.popupContent.innerHTML = this.selectedFeatureMessage;
+    var buildTypeOfNewFeature = this.getBuildTypeOfFeature(this.selectedFeature);
+    
+    if(typeof(buildTypeOfNewFeature) == 'undefined') {
+      this.popupOverlay.setPosition(undefined);
+      return;
+    }
+
+    var newHomes =  this.props.map_store.calculateHomesBuiltInFeature(this.selectedFeature, buildTypeOfNewFeature);
+
+    if(typeof(newHomes) == 'undefined') {
+      this.popupOverlay.setPosition(undefined);
+      return;
+    }
+
+    var selectedFeatureMessage = "" + newHomes + ' ' + buildTypeOfNewFeature;
+
+    this.popupContent.innerHTML = selectedFeatureMessage;
     this.popupOverlay.setPosition(center);
   },
 
-  popupOverFeature(feature, messagePrefix) {
+  popupOverFeature(feature) {
     this.selectedFeature = feature;
-
-    var buildTypeOfNewFeature = this.getBuildTypeOfFeature(this.selectedFeature);
-    var newHomes =  this.props.map_store.calculateHomesBuiltInFeature(this.selectedFeature, buildTypeOfNewFeature);
-
-    this.selectedFeatureMessage = messagePrefix + newHomes + ' ' + buildTypeOfNewFeature;
     this.moveFeaturePopup();
   },
 
@@ -248,11 +270,14 @@ module.exports = React.createClass({
       }
     });
     
-    this.setInteractions(typeof(feature) == "undefined");
+    var featureFound = typeof(feature) == "undefined";
+    
+    this.setInteractions(featureFound | this.inDrawMode);
   },
 
   componentDidMount: function() {
     this.showHelpPopup = true;
+    this.inDrawMode = false;
     this.initializeMap('map');
     this.buildingInteractions = {};
     this.buildingOverlays = {};
