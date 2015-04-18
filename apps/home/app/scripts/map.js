@@ -111,22 +111,38 @@ module.exports = React.createClass({
     });
   },
   
-  popupOverFeature(feature, message) {
+  getBuildTypeOfFeature(feature) {
     var _this = this;
-    var extent = feature.getGeometry().getExtent();
+    var buildTypeOfNewFeature;
+    for(var buildingType in _this.buildingOverlays) {
+      if(_this.buildingOverlays[buildingType].getFeatures().getArray().indexOf(this.selectedFeature) != -1) {
+        buildTypeOfNewFeature = buildingType;
+      }
+    }
+    return buildTypeOfNewFeature;
+  },
+  
+  moveFeaturePopup() {
+    if(typeof(this.selectedFeature) == 'undefined') {
+      return;
+    }
+    var extent = this.selectedFeature.getGeometry().getExtent();
     var center = [(extent[0] + extent[2]) / 2,
                   (extent[1] + extent[3]) / 2];
     var content = document.getElementById('popup-content');
 
-    var buildTypeOfNewFeature;
-    for(var buildingType in _this.buildingOverlays) {
-      if(_this.buildingOverlays[buildingType].getFeatures().getArray().indexOf(feature) != -1) {
-        buildTypeOfNewFeature = buildingType;
-      }
-    }
-    var newHomes =  _this.props.map_store.calculateHomesBuiltInFeature(feature, buildTypeOfNewFeature);
-    _this.popupContent.innerHTML = message + newHomes + ' ' + buildTypeOfNewFeature;
-    _this.popupOverlay.setPosition(center);
+    this.popupContent.innerHTML = this.selectedFeatureMessage;
+    this.popupOverlay.setPosition(center);
+  },
+
+  popupOverFeature(feature, messagePrefix) {
+    this.selectedFeature = feature;
+
+    var buildTypeOfNewFeature = this.getBuildTypeOfFeature(this.selectedFeature);
+    var newHomes =  this.props.map_store.calculateHomesBuiltInFeature(this.selectedFeature, buildTypeOfNewFeature);
+
+    this.selectedFeatureMessage = messagePrefix + newHomes + ' ' + buildTypeOfNewFeature;
+    this.moveFeaturePopup();
   },
 
   initializePopupOverlay: function() {
@@ -288,6 +304,7 @@ module.exports = React.createClass({
   },
 
   render: function() {
+    this.moveFeaturePopup();
     return (
       <div className="home-map" id="map">
         <div id="popup" className="home-map__ol-popup">
