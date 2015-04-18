@@ -2,6 +2,7 @@ var React = require('react');
 var ol = require('openlayers');
 var Reflux = require('reflux');
 var _ = require('lodash');
+var dialog = require('vex-js/js/vex.dialog.js');
 
 var latlng = 'EPSG:4326'; //WGS 1984 projection
 var mercantor = 'EPSG:3857'; 
@@ -67,11 +68,20 @@ module.exports = React.createClass({
   },
   
   initializeBuildingInteraction: function(feature_overlay) {
+    var _this = this;
+
     var draw = new ol.interaction.Draw({
       features: feature_overlay.getFeatures(),
       type: 'Polygon'
     });
-    
+
+    draw.on('drawstart', function() {
+      if(_this.showHelpPopup) {
+        dialog.alert('You have started building some homes.<br>Single click to draw the edge of where you want to build, and double click to finish.');
+        _this.showHelpPopup = false;
+      }
+    });
+
     var modify = new ol.interaction.Modify({
       features: feature_overlay.getFeatures(),
       // the SHIFT key must be pressed to delete vertices, so
@@ -224,6 +234,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
+    this.showHelpPopup = true;
     this.initializeMap('map');
     this.buildingInteractions = {};
     this.buildingOverlays = {};

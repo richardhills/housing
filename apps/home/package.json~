@@ -5,6 +5,8 @@
   "author": "RDH",
   "devDependencies": {
     "babelify": "",
+    "6to5-browserify": "^1.4.0",
+    "6to5": "",
     "browserify": "^8.1.1",
     "gulp": "^3.8.10",
     "gulp-autoprefixer": "^2.0.0",
@@ -22,7 +24,6 @@
     "watchify": "^2.2.1"
   },
   "scripts": {
-    "start": "./node_modules/gulp/bin/gulp.js watch --watchify --notify",
     "install": "./node_modules/gulp/bin/gulp.js build --clean"
   },
   "dependencies": {
@@ -34,7 +35,8 @@
     "openlayers": "3.2.1",
     "proj4": "",
     "qs": "2.3.3",
-    "react": "0.13",
-    "reflux": "^0.2.4"
+    "react": "^0.12.2",
+    "reflux": "0.2.4",
+    "vex-js": "2.3.2"
   }
 }

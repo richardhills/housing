@@ -6,13 +6,14 @@ var ControlBar = require('./controlbar');
 var Map = require('./map');
 var Key = require('./key');
 
+
 module.exports = React.createClass({
   mixins: [Reflux.ListenerMixin],
 
   componentDidMount() {
     this.listenTo(this.props.map_store, this.onMapStoreChanged);
   },
-  
+
   onMapStoreChanged: function(data) {
     this.setState();
   },
