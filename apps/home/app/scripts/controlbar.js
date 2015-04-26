@@ -61,7 +61,7 @@ module.exports = React.createClass({
     } else if(extraHomesBuilt < 0) {
       newBuildMessage = (<p>Homes lost: {extraHomesBuilt}</p>);
     } else {
-      newBuildMessage = null;
+      newBuildMessage = (<p>-</p>);
     }
   
     return (
@@ -71,7 +71,7 @@ module.exports = React.createClass({
         {Messages.sidePanel}
         </p>
         <p>Where would you build?</p>
-        <p>Double click on the map to start building</p>
+        <p>Click on the map to start building</p>
         {this.createCheckBox('flats', 'Flats')}
         {this.createCheckBox('terraced', 'Terraced Homes')}
         {this.createCheckBox('semi-detached', 'Semi-detached Homes')}

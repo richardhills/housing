@@ -259,7 +259,7 @@ module.exports = React.createClass({
     }),
     'other': new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(50, 50, 50, 0.8)'
+        color: 'rgba(100, 100, 100, 0.8)'
       }),
       stroke: new ol.style.Stroke({
         color: '#000000',

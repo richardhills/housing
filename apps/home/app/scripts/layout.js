@@ -23,10 +23,10 @@ module.exports = React.createClass({
     this.setState();
 
     if(this.showTargetCompletedPopup & this.props.map_store.getTotalExtraHomesBuilt() >= 28000) {
-      dialog.alert(Messages.onTargetCompleted(this.props.map_store.getTotalHomesBuilt()));
+      dialog.alert(Messages.onTargetCompleted(this.props.map_store.getTotalExtraHomesBuilt()), 28000);
       this.showTargetCompletedPopup = false;
     } else if(this.showFirstBuildPopup & this.props.map_store.getTotalExtraHomesBuilt() > 0) {
-      dialog.alert(Messages.onStartEndBuilding(this.props.map_store.getTotalHomesBuilt()));
+      dialog.alert(Messages.onStartEndBuilding(this.props.map_store.getTotalExtraHomesBuilt()));
       this.showFirstBuildPopup = false; 
     }
   },
