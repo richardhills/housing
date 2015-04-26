@@ -1,7 +1,21 @@
 var immutable = require('immutable');
 var ol = require('openlayers');
 var jquery = require('jquery');
+var base64 = require('js-base64').Base64;
 
+var buildTypeCodes = {'flats': 1,
+    'terraced': 2,
+    'semi-detached': 3,
+    'detached': 4,
+    'other': 5};
+
+var buildTypeCodesReverse = {};
+
+(function(){
+  for (var key in buildTypeCodes)
+    buildTypeCodesReverse[buildTypeCodes[key]] = key
+})();
+  
 module.exports = class MapStore {
 
   constructor(map_actions) {
@@ -51,26 +65,84 @@ module.exports = class MapStore {
   }
   
   calculateInitialBuildingsFromQueryString() {
-    var geoJSON = new ol.format.GeoJSON();
-    var initialBuildings = {};
-    ['flats', 'terraced', 'semi-detached', 'detached'].forEach(function(buildType) {
-      var data = this.getParameterByName(buildType);
-      if(data) {
-        initialBuildings[buildType] = geoJSON.readFeatures(data);
+    var data = this.getParameterByName('datav1');
+    var initialBuildings = {'flats': [],
+                            'terraced': [],
+                            'semi-detached': [],
+                            'detached': [],
+                            'other': []};
+    if(data) {
+      var bufferAsString = base64.decode(data);
+      
+      var buffer = new ArrayBuffer(bufferAsString.length * 2);
+      var bufferView = new Uint16Array(buffer);
+      for (var i = 0, strLen = bufferAsString.length; i < strLen; i++) {
+        bufferView[i] = bufferAsString.charCodeAt(i);
       }
-    }, this);
+      
+      bufferView = new Uint8Array(buffer);
+      
+      var offset = 0;
+      while(offset < bufferView.length) {
+        var headerView = new DataView(buffer, offset);
+        var frameLength = headerView.getUint16(0);
+        var numberOfPoints = (frameLength - 4) / 4 / 2;
+        var dataView = new Float32Array(buffer, offset + 4, numberOfPoints * 2);
+        offset += frameLength;
+        var buildTypeCode = headerView.getUint8(2);
+        var buildType = buildTypeCodesReverse[buildTypeCode];
+        
+        var ring = [];
+        
+        for(var pointNumber = 0; pointNumber < numberOfPoints; pointNumber ++) {
+          var x = dataView[pointNumber * 2];
+          var y = dataView[pointNumber * 2 + 1];
+          ring.push([x, y]);
+        }
+        
+        var polygon = new ol.geom.Polygon([ring]);
+        var feature = new ol.Feature(polygon);
+        initialBuildings[buildType].push(feature);
+      }
+    }
     return immutable.Map(initialBuildings);
   }
 
   createHomesBuiltQueryString(buildFeatures) {
     var params = {};
+    
+    var buffer = new ArrayBuffer();
+    var dataOffset = 0;
+    
     for(var buildType in buildFeatures) {
-      var geoJSON = new ol.format.GeoJSON();
       var featuresArray = buildFeatures[buildType].getFeatures().getArray();
-      // geoJSON doesn't seem to like feature collections
-      params[buildType] = geoJSON.writeFeatures(featuresArray);
+      featuresArray.forEach(function(feature) {
+        var pointsArray = feature.getGeometry().getCoordinates()[0].reduce(function(x, y) {
+          return x.concat(y);
+        });;
+        var pointsAsFloat32Array = new Float32Array(pointsArray);
+        var lengthOfFrame = (4 + pointsAsFloat32Array.length * 4);
+        
+        var newFrame = new ArrayBuffer(lengthOfFrame);
+        var headerView = new DataView(newFrame, 0);
+        var dataView = new Float32Array(newFrame, 4)
+        headerView.setUint16(0, lengthOfFrame);
+        headerView.setUint8(2, buildTypeCodes[buildType]);
+        dataView.set(pointsAsFloat32Array);
+        dataOffset += lengthOfFrame;
+        
+        var previousView = new Uint8Array(buffer);
+        buffer = new ArrayBuffer(previousView.length + lengthOfFrame);
+        var newView = new Uint8Array(buffer);
+        var newFrameView = new Uint8Array(newFrame);
+        newView.set(previousView);
+        newView.set(newFrameView, previousView.length);
+      });
     }
-    return jquery.param(params);
+    var buffersAsString = String.fromCharCode.apply(null, new Uint16Array(buffer));
+    var base64Data = base64.encodeURI(buffersAsString);
+    
+    return jquery.param({datav1: base64Data});
   }
   
   storeHomesBuiltInQueryString(buildFeatures) {
@@ -82,7 +154,8 @@ module.exports = class MapStore {
     var total = {'flats': 0,
                  'terraced': 0,
                  'semi-detached': 0,
-                 'detached': 0};
+                 'detached': 0,
+                 'other': 0};
     
     for(var buildType in buildFeatures) {
       buildFeatures[buildType].getFeatures().forEach(function(feature) {
@@ -101,7 +174,7 @@ module.exports = class MapStore {
     };
     var units_per_m2 = 5;
     
-    if(typeof(feature.getGeometry().getArea) == "function") {
+    if(buildType != 'other' & typeof(feature.getGeometry().getArea) == "function") {
       var area = feature.getGeometry().getArea();
       var aream2 = area / units_per_m2;
       return Math.round(aream2 / housingSize[buildType]);

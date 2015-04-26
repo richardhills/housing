@@ -13,6 +13,14 @@ module.exports = React.createClass({
     this.props.map_actions.clear_all();
   },
 
+  homesBuilt: function(type) {
+    if(type != 'other') {
+      return " (+" + this.props.map_store.getHomesBuilt().get(type) + " extra built)"
+    } else {
+      return ""
+    }
+  },
+  
   createCheckBox: function(value, label) {
     return (
       <div>
@@ -23,7 +31,7 @@ module.exports = React.createClass({
             value={value}
             id={value}
             onChange={this.buildTypeChanged} />
-        <label htmlFor={value}>{label} (+{this.props.map_store.getHomesBuilt().get(value)} extra built)</label>
+        <label htmlFor={value}>{label}{this.homesBuilt(value)}</label>
       </div>
     );
   },
@@ -49,6 +57,7 @@ module.exports = React.createClass({
         {this.createCheckBox('terraced', 'Terraced Homes')}
         {this.createCheckBox('semi-detached', 'Semi-detached Homes')}
         {this.createCheckBox('detached', 'Detached Homes')}
+        {this.createCheckBox('other', 'Non-housing')}
         <p>Total new build: {this.props.map_store.getTotalHomesBuilt()}</p>
         {stillRequiredMessage}
         <button onClick={this.startAgain}>Start again</button>

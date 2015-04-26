@@ -149,15 +149,21 @@ module.exports = React.createClass({
       return;
     }
 
-    var newHomes = this.props.map_store.calculateHomesBuiltInFeature(this.selectedFeature, buildTypeOfNewFeature);
+    var selectedFeatureMessage;
+    
+    if(buildTypeOfNewFeature != 'other') {
+      var newHomes = this.props.map_store.calculateHomesBuiltInFeature(this.selectedFeature, buildTypeOfNewFeature);
+  
+      if(typeof(newHomes) == 'undefined') {
+        this.popupOverlay.setPosition(undefined);
+        return;
+      }
 
-    if(typeof(newHomes) == 'undefined') {
-      this.popupOverlay.setPosition(undefined);
-      return;
+      selectedFeatureMessage = "" + newHomes + ' ' + buildTypeOfNewFeature;
+    } else {
+      selectedFeatureMessage = "Other, non housing";
     }
-
-    var selectedFeatureMessage = "" + newHomes + ' ' + buildTypeOfNewFeature;
-
+      
     this.popupContent.innerHTML = selectedFeatureMessage;
     this.popupOverlay.setPosition(center);
   },
@@ -239,6 +245,21 @@ module.exports = React.createClass({
     'detached': new ol.style.Style({
       fill: new ol.style.Fill({
         color: 'rgba(131, 147, 202, 0.8)'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#000000',
+        width: 2
+      }),
+      image: new ol.style.Circle({
+        radius: 7,
+        fill: new ol.style.Fill({
+          color: '#ffcc33'
+        })
+      })
+    }),
+    'other': new ol.style.Style({
+      fill: new ol.style.Fill({
+        color: 'rgba(50, 50, 50, 0.8)'
       }),
       stroke: new ol.style.Stroke({
         color: '#000000',
