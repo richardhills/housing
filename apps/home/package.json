@@ -38,6 +38,6 @@
     "react": "^0.12.2",
     "reflux": "0.2.4",
     "vex-js": "2.2.1",
-    "js-base64": ""
+    "base64-arraybuffer": ""
   }
 }

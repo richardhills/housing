@@ -15,7 +15,15 @@ module.exports = React.createClass({
 
   homesBuilt: function(type) {
     if(type != 'other') {
-      return " (+" + this.props.map_store.getHomesBuilt().get(type) + " extra built)"
+      var baseline = this.props.map_store.getBaseline().get(type);
+      var now = this.props.map_store.getHomesBuilt().get(type);
+      if(now > baseline) {
+        return " (+" + (now - baseline) + " extra built)";
+      } else if(now < baseline) {
+        return " (" + (now - baseline) + " lost)";
+      } else {
+        return "";
+      }
     } else {
       return ""
     }
@@ -38,11 +46,22 @@ module.exports = React.createClass({
 
   render: function() {
     var target = 28000;
+    var extraHomesBuilt = this.props.map_store.getTotalExtraHomesBuilt();
+    
     var stillRequiredMessage;
-    if(this.props.map_store.getTotalHomesBuilt() > 28000) {
+    if(extraHomesBuilt > 28000) {
       stillRequiredMessage = (<p><b>Congratulations! You've built enough homes to last until 2026</b></p>);
     } else {
-      stillRequiredMessage = (<p><b>Still required: {28000 - this.props.map_store.getTotalHomesBuilt()}</b></p>);
+      stillRequiredMessage = (<p><b>Still required: {28000 - extraHomesBuilt}</b></p>);
+    }
+    
+    var newBuildMessage;
+    if(extraHomesBuilt > 0) {
+      newBuildMessage = (<p>Total new build: {extraHomesBuilt}</p>);
+    } else if(extraHomesBuilt < 0) {
+      newBuildMessage = (<p>Homes lost: {extraHomesBuilt}</p>);
+    } else {
+      newBuildMessage = null;
     }
   
     return (
@@ -58,7 +77,7 @@ module.exports = React.createClass({
         {this.createCheckBox('semi-detached', 'Semi-detached Homes')}
         {this.createCheckBox('detached', 'Detached Homes')}
         {this.createCheckBox('other', 'Non-housing')}
-        <p>Total new build: {this.props.map_store.getTotalHomesBuilt()}</p>
+        {newBuildMessage}
         {stillRequiredMessage}
         <button onClick={this.startAgain}>Start again</button>
         <p><a href={this.props.map_store.getShareOnFacebookLink()} target='_blank'>Share your plan on facebook</a></p>
