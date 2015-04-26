@@ -14,10 +14,16 @@ var Messages = require("./messages");
 var store = Reflux.createStore(new MapStore(actions.get("map_actions")));
 
 ready(function () {
-  React.render(React.createElement(Layout, { map_actions: actions.get("map_actions"), map_store: store }), document.getElementById("home"));
+  // Hack to get the app to initialize with the Oxford editing scenario
+  // (need to put the overlay data more in the store than the map...
+  if (store.getInitialBuildings().get("flats") == 0) {
+    actions.get("map_actions").clear_all();
+  } else {
+    React.render(React.createElement(Layout, { map_actions: actions.get("map_actions"), map_store: store }), document.getElementById("home"));
 
-  vex.defaultOptions.className = "vex-theme-os";
-  dialog.alert(Messages.onStartup);
+    vex.defaultOptions.className = "vex-theme-os";
+    dialog.alert(Messages.onStartup);
+  }
 });
 
 },{"./actions":2,"./layout":5,"./map-store":6,"./messages":8,"domready":11,"react":161,"reflux":162,"vex-js":182,"vex-js/js/vex.dialog.js":181}],2:[function(require,module,exports){
