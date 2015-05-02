@@ -4,7 +4,7 @@ var immutable = require('immutable');
 module.exports = () => {
 
   var MapActions = Reflux.createActions([
-    'build_type_changed', 'build_features_changed', 'clear_all'
+    'build_type_changed', 'build_features_changed', 'clear_all', 'showWolfsonPrizePlan'
   ]);
   
   return immutable.Map({

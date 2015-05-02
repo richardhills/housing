@@ -12,6 +12,10 @@ module.exports = React.createClass({
   startAgain: function(event) {
     this.props.map_actions.clear_all();
   },
+  
+  showWolfsonPrizePlan: function(event) {
+    this.props.map_actions.showWolfsonPrizePlan();
+  },
 
   homesBuilt: function(type) {
     if(type != 'other') {
@@ -30,6 +34,7 @@ module.exports = React.createClass({
   },
   
   createCheckBox: function(value, label) {
+    var building_type_key_image = 'static/assets/' + value + '.png';
     return (
       <div>
         <input
@@ -40,6 +45,7 @@ module.exports = React.createClass({
             id={value}
             onChange={this.buildTypeChanged} />
         <label htmlFor={value}>{label}{this.homesBuilt(value)}</label>
+        <img src={building_type_key_image} className="home-controlbar__keyimage" />
       </div>
     );
   },
@@ -80,6 +86,7 @@ module.exports = React.createClass({
         {newBuildMessage}
         {stillRequiredMessage}
         <button onClick={this.startAgain}>Start again</button>
+        <button onClick={this.showWolfsonPrizePlan}>Show Wolfson Prize Plan</button>
         <p><a href={this.props.map_store.getShareOnFacebookLink()} target='_blank'>Share your plan on facebook</a></p>
         <p><a href="mailto:richard.hills@gmail.com">richard.hills@gmail.com</a></p>
       </div>

@@ -47,9 +47,6 @@ module.exports = React.createClass({
                 map_actions={this.props.map_actions} />
             </div>
           </div>
-          <div className="home-layout__key">
-            <Key />
-          </div>
         </div>
       </div>
     );

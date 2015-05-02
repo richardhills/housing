@@ -229,7 +229,7 @@ module.exports = React.createClass({
     }),
     'semi-detached': new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(130, 202, 156, 0.8)'
+        color: 'rgba(131, 147, 202, 0.8)'
       }),
       stroke: new ol.style.Stroke({
         color: '#000000',
@@ -244,7 +244,7 @@ module.exports = React.createClass({
     }),
     'detached': new ol.style.Style({
       fill: new ol.style.Fill({
-        color: 'rgba(131, 147, 202, 0.8)'
+        color: 'rgba(161, 134, 190, 0.8)'
       }),
       stroke: new ol.style.Stroke({
         color: '#000000',

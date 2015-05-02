@@ -1,4 +1,8 @@
 .#{$ns}-controlbar {
 
   margin:10px;
+  
+  &__keyimage {
+    margin-left:0.5em;
+  }
 }
