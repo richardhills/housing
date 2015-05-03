@@ -441,14 +441,12 @@ body.vex-open {
 
 .home-layout__controlbar {
   float: left;
-  width: 300px; }
+  width: 26em; }
 .home-layout__contents {
-  margin-left: 300px; }
+  margin-left: 26em; }
 .home-layout__map-container {
   width: 100%;
   float: left; }
-.home-layout__map {
-  margin-right: 220px; }
 .home-layout__key {
   float: left;
   width: 220px;
@@ -459,14 +457,12 @@ body.vex-open {
 
 .home-layout__controlbar {
   float: left;
-  width: 300px; }
+  width: 26em; }
 .home-layout__contents {
-  margin-left: 300px; }
+  margin-left: 26em; }
 .home-layout__map-container {
   width: 100%;
   float: left; }
-.home-layout__map {
-  margin-right: 220px; }
 .home-layout__key {
   float: left;
   width: 220px;
@@ -517,6 +513,8 @@ body.vex-open {
 
 .home-controlbar {
   margin: 10px; }
+  .home-controlbar__keyimage {
+    margin-left: 0.5em; }
 
 html {
   background-color: #ffffff;
