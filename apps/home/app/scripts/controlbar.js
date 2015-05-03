@@ -89,7 +89,7 @@ module.exports = React.createClass({
         <div><button onClick={this.showWolfsonPrizePlan}>Show Wolfson Prize Plan</button></div>
         <p><a href={this.props.map_store.getShareOnFacebookLink()} target='_blank'>Share your plan on facebook</a></p>
         <p><a href="mailto:richard.hills@gmail.com">richard.hills@gmail.com</a></p>
-        <a href="https://github.com/richardhills/housing">Code on github</a>
+        <a href="https://github.com/richardhills/housing"  target='_blank'>Code on github</a>
       </div>
     );
   }

@@ -8,7 +8,7 @@ var current = {
 
 var wolfson = {
   id: 'w',
-  sidePanelMessage: (<p>This shows the <a href="http://www.policyexchange.org.uk/wolfsonprize/item/wolfson-economics-prize-2014">Wolfson Economics Prize winner</a> <a href="http://www.policyexchange.org.uk/images/WolfsonPrize2014/20140827%20rudlin%20stage%202.pdf">David Rudlin's proposal</a>, applied to Oxford. It focuses on 4 areas: extending Kidlington, extending Oxford in the west and in the south, and extending Abingdon northwards. <br/><br/>What would you change?<br/><br/>Click and drag the areas on the map to make changes.</p>),
+  sidePanelMessage: (<p>This shows the <a href="http://www.policyexchange.org.uk/wolfsonprize/item/wolfson-economics-prize-2014" target='_blank'>Wolfson Economics Prize winner</a> <a href="http://www.policyexchange.org.uk/images/WolfsonPrize2014/20140827%20rudlin%20stage%202.pdf" target='_blank'>David Rudlin's proposal</a>, applied to Oxford. It focuses on 4 areas: extending Kidlington, extending Oxford in the west and in the south, and extending Abingdon northwards. <br/><br/>What would you change?<br/><br/>Click and drag the areas on the map to make changes.</p>),
   showTargetPopup: false
 };
 
