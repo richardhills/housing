@@ -297,7 +297,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function() {
-    this.showHelpPopup = true;
+    this.showHelpPopup = this.props.map_store.getShowHelpPopups();
     this.inDrawMode = false;
 
     this.initializeMap('map');

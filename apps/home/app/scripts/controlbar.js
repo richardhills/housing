@@ -70,14 +70,14 @@ module.exports = React.createClass({
       newBuildMessage = (<p>-</p>);
     }
   
+    var sidePanelMessage = this.props.map_store.getScenario().sidePanelMessage;
+  
     return (
       <div className="home-controlbar">
         <h2>The Oxford Housing Crisis</h2>
         <p>
-        {Messages.sidePanel}
+        {sidePanelMessage}
         </p>
-        <p>Where would you build?</p>
-        <p>Click on the map to start building</p>
         {this.createCheckBox('flats', 'Flats')}
         {this.createCheckBox('terraced', 'Terraced Homes')}
         {this.createCheckBox('semi-detached', 'Semi-detached Homes')}
@@ -85,10 +85,11 @@ module.exports = React.createClass({
         {this.createCheckBox('other', 'Non-housing')}
         {newBuildMessage}
         {stillRequiredMessage}
-        <button onClick={this.startAgain}>Start again</button>
-        <button onClick={this.showWolfsonPrizePlan}>Show Wolfson Prize Plan</button>
+        <div><button onClick={this.startAgain}>Show Oxford as it is today</button></div>
+        <div><button onClick={this.showWolfsonPrizePlan}>Show Wolfson Prize Plan</button></div>
         <p><a href={this.props.map_store.getShareOnFacebookLink()} target='_blank'>Share your plan on facebook</a></p>
         <p><a href="mailto:richard.hills@gmail.com">richard.hills@gmail.com</a></p>
+        <a href="https://github.com/richardhills/housing">Code on github</a>
       </div>
     );
   }

@@ -1,36 +1,18 @@
 var _ = require('lodash');
 var gulp = require('gulp');
 var reactify = require('reactify');
-var babelify = require('babelify');
 var to5 = require('6to5-browserify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var gutil = require('gulp-util');
-var notify = require('notify-send');
 var sass = require('gulp-sass');
 var plumber = require('gulp-plumber');
 var prefix = require('gulp-autoprefixer');
 var rename = require('gulp-rename');
 
-var notifySend = _.debounce(function(options) {
-  notify[options.level || 'low']
-    .timeout(options.timeout || 1000)
-    .notify(
-      options.subject || '',
-      options.message || ''
-    );
-}, 10000, {
-  leading: true,
-  trailing: false
-});
-
 function error(task) {
   return function(err) {
     gutil.log(gutil.colors.red(err));
-    notifySend({
-      subject: '[' + task + '] ' + (err.name || 'Error'),
-      message: err.message
-    });
     this.emit('end');
   };
 }

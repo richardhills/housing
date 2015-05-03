@@ -14,16 +14,15 @@ module.exports = React.createClass({
 
   componentDidMount() {
     this.listenTo(this.props.map_store, this.onMapStoreChanged);
-    this.showHelpPopup = true;
-    this.showTargetCompletedPopup = true;
-    this.showFirstBuildPopup = true;
+    this.showTargetCompletedPopup = this.props.map_store.getScenario().showTargetPopup;
+    this.showFirstBuildPopup = this.props.map_store.getShowHelpPopups();
   },
 
   onMapStoreChanged: function(data) {
     this.setState();
 
     if(this.showTargetCompletedPopup & this.props.map_store.getTotalExtraHomesBuilt() >= 28000) {
-      dialog.alert(Messages.onTargetCompleted(this.props.map_store.getTotalExtraHomesBuilt()), 28000);
+      dialog.alert(Messages.onTargetCompleted(this.props.map_store.getTotalExtraHomesBuilt(), 28000));
       this.showTargetCompletedPopup = false;
     } else if(this.showFirstBuildPopup & this.props.map_store.getTotalExtraHomesBuilt() > 0) {
       dialog.alert(Messages.onStartEndBuilding(this.props.map_store.getTotalExtraHomesBuilt(), 28000));

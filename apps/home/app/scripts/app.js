@@ -15,7 +15,7 @@ ready(function() {
   // Hack to get the app to initialize with the Oxford editing scenario
   // (need to put the overlay data more in the store than the map...
   if(store.getInitialBuildings().get('flats') == 0) {
-    actions.get("map_actions").clear_all();  
+    actions.get("map_actions").first_load();  
   } else {
     React.render(
       <Layout map_actions={actions.get('map_actions')} map_store={store} />,
@@ -23,6 +23,8 @@ ready(function() {
     );
 
     vex.defaultOptions.className = 'vex-theme-os';
-    dialog.alert(Messages.onStartup);
+    if(store.getShowHelpPopups()) {
+      dialog.alert(Messages.onStartup);
+    }
   }
 });
